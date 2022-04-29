@@ -4,6 +4,6 @@ We can use it to demonstrate making pull requests or raising issues in a GitHub 
 
 One good way to contribute to a project is to make additions and/or edits to documentation!
 
-Fxing something as simple as a typo is a great way to get started as a contributor!
+Fixing something as simple as a typo is a great way to get started as a contributor!
 
 Or, consider adding some more content to this file.
