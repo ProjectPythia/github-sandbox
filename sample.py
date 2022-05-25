@@ -4,3 +4,4 @@ a = 2
 b = 8
 
 # Add a line to this file that calculates the sum of a and b and prints out the result to the screen.
+print(a+b)
