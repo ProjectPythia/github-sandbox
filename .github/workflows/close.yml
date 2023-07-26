@@ -1,0 +1,44 @@
+name: Close Stale Issues and Pull Requests
+on:
+  schedule:
+    # Set the interval for running the workflow (e.g., every day)
+    - cron: "0 0 1,15 * *"
+
+jobs:
+  close-stale-issues-and-pull-requests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Close Stale Issues and Pull Requests
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Define the number of days of inactivity after which issues/pull requests will be considered stale
+          stale_days=30
+
+          # Get the current date in ISO 8601 format
+          current_date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+          # For Issues
+          issues=$(curl -sSL -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/${{ github.repository }}/issues?state=open")
+          for issue in $(echo "${issues}" | jq -r '.[] | @base64'); do
+            issue_date=$(echo "$issue" | base64 --decode | jq -r '.created_at')
+            days_since_issue=$(( ($(date -d "${current_date}" +%s) - $(date -d "${issue_date}" +%s)) / 86400 ))
+            if [ $days_since_issue -ge $stale_days ]; then
+              issue_number=$(echo "$issue" | base64 --decode | jq -r '.number')
+              curl -sSL -H "Authorization: token $GITHUB_TOKEN" -X POST -d "{\"state\":\"closed\"}" "https://api.github.com/repos/${{ github.repository }}/issues/$issue_number/comments"
+            fi
+          done
+
+          # For Pull Requests
+          pull_requests=$(curl -sSL -H "Authorization: token $GITHUB_TOKEN" "https://api.github.com/repos/${{ github.repository }}/pulls?state=open")
+          for pr in $(echo "${pull_requests}" | jq -r '.[] | @base64'); do
+            pr_date=$(echo "$pr" | base64 --decode | jq -r '.created_at')
+            days_since_pr=$(( ($(date -d "${current_date}" +%s) - $(date -d "${pr_date}" +%s)) / 86400 ))
+            if [ $days_since_pr -ge $stale_days ]; then
+              pr_number=$(echo "$pr" | base64 --decode | jq -r '.number')
+              curl -sSL -H "Authorization: token $GITHUB_TOKEN" -X POST -d "{\"state\":\"closed\"}" "https://api.github.com/repos/${{ github.repository }}/pulls/$pr_number/comments"
+            fi
+          done
