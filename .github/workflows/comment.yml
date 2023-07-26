@@ -1,0 +1,33 @@
+name: Comment on Issues and Pull Requests
+on:
+  issues:
+    types: [opened]
+  pull_request:
+    types: [opened]
+
+jobs:
+  comment-on-issues-and-pull-requests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Comment on Issue or Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Add your custom comment message here
+          comment_message="Thank you for opening this issue/pull request! This is a sandbox repository for you to practice working with GitHub. In interest of keeping this learning resource static for future users, your changes will not be incorporated. All issues and pull requests will eventually be closed."
+
+          # For Issues
+          if [ "${{ github.event_name }}" = "issues" ]; then
+            comment_url=$(jq -r .issue.comments_url "${{ github.event_path }}")
+          fi
+
+          # For Pull Requests
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            comment_url=$(jq -r .pull_request.comments_url "${{ github.event_path }}")
+          fi
+
+          # Post the comment
+          curl -sSL -H "Authorization: token $GITHUB_TOKEN" -X POST -d "{\"body\":\"$comment_message\"}" "$comment_url"
