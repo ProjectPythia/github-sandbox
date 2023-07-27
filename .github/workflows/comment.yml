@@ -12,4 +12,4 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            Thank you for your pull request! As this is a sandbox repository, your pull request will eventually be closed. If you would like engagement from the Pythia team on this, please tag @ProjectPythia/infrastructure to let us know!
+            Thank you for your pull request! As this is a sandbox repository, your pull request will eventually be closed. If you would like engagement from the Pythia team on this, please tag `@ProjectPythia/infrastructure` to let us know!
