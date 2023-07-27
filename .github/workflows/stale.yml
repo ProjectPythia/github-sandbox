@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/stale@v8
         with:
-          stale-issue-message: 'Thank you for opening this issue! This is a sandbox repository for you to practice working with GitHub and practice issues will be closed once stale. This issue is stale because it has been open 30 days with no activity. Remove stale label or comment or this will be closed in 5 days. If this is in error and your issue requires attention, please tag the `@ProjectPythia` team.'
+          stale-issue-message: 'Thank you for opening this issue! This is a sandbox repository for you to practice working with GitHub and practice issues will be closed once stale. This issue is stale because it has been open 30 days with no activity. Remove stale label or comment or this will be closed in 5 days. If this is in error and your issue requires attention, please tag the `@ProjectPythia/infrastructure` team.'
           stale-pr-message: 'Thank you for opening this pull request! This is a sandbox repository for you to practice working with GitHub. In interest of keeping this learning resource static for future users, your changes will not be incorporated. This is pull request is stale because it has been open 30 days with no activity. Remove stale label or comment or this will be closed in 5 days. If this is in error and your pull request requires attention, please tag the `@ProjectPythia/infrastructure` team.'
           close-issue-message: 'This issue was closed because it has been stalled for 5 days with no activity.'
           days-before-stale: 30
